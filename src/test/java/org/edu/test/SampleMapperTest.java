@@ -25,7 +25,7 @@ public class SampleMapperTest {
 	 * timestamp default now() ,primary key(userid) ) INSERT INTO member VALUES
 	 * ('user2','1234','kimilguk','user02@test.com',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 	 * 프로젝트폴더경로 DbInterface/src/main/webapp/WEB-INF/spring/root-context.xml
-	 * (Mysql서버접속정보 변경해야 합니다.)
+	 * (Mysql서버접속정보 변경해야 합니다.11)
 	 */
 
 	// interface 로 Mybatis 쿼리 사용 DI처리(Dependency Injcetion)
