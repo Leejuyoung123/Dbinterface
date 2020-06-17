@@ -1,18 +1,20 @@
 package org.edu.test;
 
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 
-import org.edu.dao.IF_SampleMapper;
+import org.edu.dao.IF_SampleDAO;
+import org.edu.service.IF_SampleService;
 import org.edu.vo.MemberVO;
 // import org.edu.dao.SampleSelectProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+@WebAppConfiguration // Junit 과 aop동시 사용 에러 처리를 위함
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring/**/*.xml" })
 public class SampleMapperTest {
@@ -30,79 +32,75 @@ public class SampleMapperTest {
 
 	// interface 로 Mybatis 쿼리 사용 DI처리(Dependency Injcetion)
 	@Inject
-	private IF_SampleMapper mapper;
-
+	private IF_SampleDAO mapper;
+	@Inject
+	private IF_SampleService sampleService;
+	// aop 가 현재 작동되면 join point 가 서비스에 있기떄문
 	/*
 	 * 인터페이스를 mapper 실행가능하게 mapper변수로 지정 IF_SampleMapper mapper = new
 	 * IF_SampleMapper(); 클래스를 실행변수로 사용시= >IF_SampleMapper mapper =new
 	 */
-	
-	 
+
 	@Test
-	public void testInsertMember() {
-		
+	public void testInsertMember() throws Exception {
+
 		/*
-		   int vRandom =0;
-		   Random ran = new Random();
-		   vRandom = ran.nextInt();
-		   								*/
+		 * int vRandom =0; Random ran = new Random(); vRandom = ran.nextInt();
+		 */
 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat();
 		String today = formatter.format(new java.util.Date());
-		testSelectMember();
-		
+		//testSelectMember();
+
 		// 입력하기전에 조회
-		System.out.println("위 쪽은 입력 전 리스트입니다.");
+		//System.out.println("위 쪽은 입력 전 리스트입니다.");
 		MemberVO vo = new MemberVO();
-		vo.setUserid("user"+ today);
+		vo.setUserid("user" + today);
 		vo.setUserpw("1234");
 		vo.setUsername("홍길동2");
 		vo.setEmail("user10@test.com");
-		mapper.insertMember(vo);
-		System.out.println("아래 쪽은 입력 후 리스트입니다.");
-		testSelectMember();
-		//입력한 후에 select 조회 할수있음
+		sampleService.insertMember(vo);
+		//System.out.println("아래 쪽은 입력 후 리스트입니다.");
+		//testSelectMember();
+		// 입력한 후에 select 조회 할수있음
 	}
-	
+
 	@Test
 	public void testUpdateMember() {
-	MemberVO vo = new MemberVO();
-	// 수정은 여러개의 변수값을 변경하기 때문에 MemberVO 클래스 변수를 매개변수로 사용한다.
-		testSelectMember();
-		System.out.println("수정 전 정보");
+		MemberVO vo = new MemberVO();
+		// 수정은 여러개의 변수값을 변경하기 때문에 MemberVO 클래스 변수를 매개변수로 사용한다.
+	/*	testSelectMember();
+		System.out.println("수정 전 정보");*/
 		vo.setUserid("userid1");
 		vo.setUserpw("4321");
 		vo.setUsername("성춘향");
 		vo.setEmail("abc@abc.com");
 		mapper.updateMember(vo);
-		System.out.println("수정 후 정보.");
-		testSelectMember();
+		/*System.out.println("수정 후 정보.");
+		testSelectMember();*/
 	}
+
 	@Test
 	public void testDeleteMember() {
-		testSelectMember();
+		/*testSelectMember();*/
 		mapper.deleteMember("userid10");
-		System.out.println("아래는 지운 후 회원 리스트입니다");
-		testSelectMember();
-	}	
+		/*System.out.println("아래는 지운 후 회원 리스트입니다");
+		testSelectMember();*/
+	}
+
 	@Test
 	public void testSelectMember() {
-	List<MemberVO> list = mapper.selectMember();
-	int cnt=1;
-	//list 받은 내용을 vo에 들어감
-	for (MemberVO vo : list) {
-		System.out.println(
-				" 번호:"+ cnt++ +"번"+
-				"아이디:"  +vo.getUserid() +
-				" 암호:"  +vo.getUserpw() +
-				" 이름:"  +vo.getUsername() +
-				"이메일:"  +vo.getEmail()
-				);
-		
-		}
+		List<MemberVO> list = mapper.selectMember();
+		/*int cnt = 1;
+		// list 받은 내용을 vo에 들어감
+		for (MemberVO vo : list) {
+			System.out.println(" 번호:" + cnt++ + "번" + "아이디:" + vo.getUserid() + " 암호:" + vo.getUserpw() + " 이름:"
+					+ vo.getUsername() + "이메일:" + vo.getEmail());
+
+		}*/
 	}
+
 	/*
-	 * IF_SampleMapper DB 연동방식1 
-	 * 인터페이스로 사용자이름에 해당하는 아이디 검색
+	 * IF_SampleMapper DB 연동방식1 인터페이스로 사용자이름에 해당하는 아이디 검색
 	 */
 	@Test
 	public void testUserId() {
