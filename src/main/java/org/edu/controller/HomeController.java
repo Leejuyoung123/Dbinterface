@@ -28,10 +28,19 @@ public class HomeController {
 	
 	@Inject
 	private IF_SampleService sampleService;
-	
+	/**
+	 * 회원수정을 위한 경로 , home.jsp 에서 삭제폼 추가
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/admin/member/update", method = RequestMethod.POST)
+	public String updateMember(MemberVO membervo, Model model, RedirectAttributes rdat) throws Exception {
+		logger.debug("update post......");
+		sampleService.updateMember(membervo);
+		return "redirect:/";
+	}
 	
 	/**
-	 * 회원등록을 위한 경로 , home.jsp 에서 등록폼 추가
+	 * 회원삭제을 위한 경로 , home.jsp 에서 삭제폼 추가
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/admin/member/create", method = RequestMethod.POST)
